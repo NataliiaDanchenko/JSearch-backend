@@ -5,7 +5,6 @@ import authMiddleware from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-// Регистрация
 router.post('/register', async (req: Request, res: Response) => {
   console.log('Request body:', req.body);
   try {
@@ -24,7 +23,7 @@ router.post('/register', async (req: Request, res: Response) => {
       about,
     });
 
-    console.log('Saving user:', user); // <- перед сохранением
+    console.log('Saving user:', user); 
     await user.save();
     console.log('User saved:', user);
 
@@ -45,7 +44,6 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-// Вход
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -72,7 +70,6 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-// Получение профиля
 router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
   try {
     const user = await User.findById((req as any).userId).select('-password');
@@ -90,7 +87,6 @@ router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-// Обновление профиля
 router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
   try {
     const { name, desiredJobTitle, about } = req.body;

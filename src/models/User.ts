@@ -18,7 +18,6 @@ const userSchema: Schema<IUser> = new Schema({
   about: { type: String },
 });
 
-// Хэширование пароля перед сохранением
 userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
@@ -27,7 +26,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// Метод сравнения пароля
 userSchema.methods.comparePassword = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
