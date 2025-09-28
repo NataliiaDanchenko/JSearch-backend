@@ -39,8 +39,8 @@ router.post('/register', async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
-    console.error('Ошибка регистрации:', err);
-    res.status(500).json({ message: 'Ошибка сервера' });
+    console.error('Помилка реєстрації:', err);
+    res.status(500).json({ message: 'Помилка сервера' });
   }
 });
 
@@ -48,10 +48,10 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Неверный email или пароль' });
+    if (!user) return res.status(400).json({ message: 'Невірний email або пароль' });
 
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(400).json({ message: 'Неверный email или пароль' });
+    if (!isMatch) return res.status(400).json({ message: 'Невірний email або пароль' });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
@@ -65,15 +65,15 @@ router.post('/login', async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
-    console.error('Ошибка входа:', err);
-    res.status(500).json({ message: 'Ошибка сервера' });
+    console.error('Помилка входа:', err);
+    res.status(500).json({ message: 'Помилка сервера' });
   }
 });
 
 router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
   try {
     const user = await User.findById((req as any).userId).select('-password');
-    if (!user) return res.status(404).json({ message: 'Пользователь не найден' });
+    if (!user) return res.status(404).json({ message: 'Користувача не знайдено' });
 
     res.json({
       email: user.email,
@@ -82,8 +82,8 @@ router.get('/profile', authMiddleware, async (req: Request, res: Response) => {
       about: user.about,
     });
   } catch (err) {
-    console.error('Ошибка получения профиля:', err);
-    res.status(500).json({ message: 'Ошибка сервера' });
+    console.error('Помилка профиля:', err);
+    res.status(500).json({ message: 'Помилка сервера' });
   }
 });
 
@@ -96,7 +96,7 @@ router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
       { new: true }
     ).select('-password');
 
-    if (!user) return res.status(404).json({ message: 'Пользователь не найден' });
+    if (!user) return res.status(404).json({ message: 'Користувач не знайдений' });
 
     res.json({
       email: user.email,
@@ -105,8 +105,8 @@ router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
       about: user.about,
     });
   } catch (err) {
-    console.error('Ошибка обновления профиля:', err);
-    res.status(500).json({ message: 'Ошибка сервера' });
+    console.error('Помилка оновлення профиля:', err);
+    res.status(500).json({ message: 'Помилка сервера' });
   }
 });
 
